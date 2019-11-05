@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.example.demo.member.service.impl.MemberMapper">
+  
+  <select id="selectMemberList" 
+      resultType="com.example.demo.member.service.Member">
+      
+      SELECT
+	    mem_id,
+	    mem_name,
+	    mem_pwd,
+	    mem_phone,
+	    mem_email,
+	    reg_date,
+	    reg_user,
+	    upd_date,
+	    upd_user
+	FROM
+	    tb_member
+	ORDER BY reg_date desc      
+  </select>
+  
+  <select id="selectMember" parameterType="string" resultType="Member">
+      
+      SELECT
+	    mem_id,
+	    mem_name,
+	    mem_pwd,
+	    mem_phone,
+	    mem_email,
+	    reg_date,
+	    reg_user,
+	    upd_date,
+	    upd_user
+	FROM
+	    tb_member
+	WHERE mem_id = #{mem_id}      
+  </select>
+  
+  <insert id="insertMember" parameterType="Member">
+    INSERT INTO tb_member (
+	    mem_id,
+	    mem_name,
+	    mem_pwd,
+	    mem_phone,
+	    mem_email,
+	    reg_date,
+	    reg_user
+	) VALUES (
+	    #{mem_id},
+	    #{mem_name},
+	    #{mem_pwd},
+	    #{mem_phone},
+	    #{mem_email},
+	    SYSDATE,
+	    #{reg_user}
+	)
+  </insert>
+  
+  <update id="updateMember" parameterType="Member">
+      
+      UPDATE tb_member
+      SET      	
+		  mem_name    = #{mem_name}
+		, mem_pwd     = #{mem_pwd}
+		, mem_phone   = #{mem_phone}
+		, mem_email   = #{mem_email}
+		, upd_date    = SYSDATE
+		, upd_user    = #{upd_user}
+      WHERE mem_id    = #{mem_id}
+  </update>
+  
+  <delete id="deleteMember" parameterType="string">
+      DELETE FROM tb_member WHERE mem_id = #{mem_id}
+  </delete>
+  
+</mapper>
