@@ -2,8 +2,11 @@ package com.example.demo.member.service.impl;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Mapper;
+
 import com.example.demo.member.service.Member;
 
+@Mapper
 public interface MemberMapper {
 	
 	// CRUD	

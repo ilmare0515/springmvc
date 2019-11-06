@@ -1,8 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd">
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd
+	http://mybatis.org/schema/mybatis-spring https://mybatis.org/schema/mybatis-spring.xsd
+	">
 	
 	<!-- Root Context: defines shared resources visible to all other web components -->
-		
+	
+	<context:component-scan base-package="com.example.demo">
+	    <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+	</context:component-scan>
+	
+	<!-- datasource 설정 -->
+	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource"
+	    destroy-method="close">
+	    
+	    <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
+	    <property name="url" value="jdbc:oracle:thin:@localhost:1521:XE"/>
+	    <property name="username" value="sit"/>
+	    <property name="password" value="oracle"/>
+	    	    
+	</bean>
+	
+	<!-- Mybatis 설정 -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+	    <property name="configLocation" value="classpath:mybatis-config.xml" />
+	    <property name="dataSource" ref="dataSource" />
+	    <property name="mapperLocations" value="classpath:mappers/*Mapper.xml" />	    
+	</bean>
+	
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+	    <constructor-arg ref="sqlSessionFactory" />
+	</bean>
+	
+	<mybatis-spring:scan base-package="com.example.demo" annotation="org.apache.ibatis.annotations.Mapper"/>
+	
 </beans>
+
+
+
+
+
+
+
+
+
+
